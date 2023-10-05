@@ -2,14 +2,15 @@
 export default {
   data() {
     return {
-      matter:0
+      matter: 0
     }
   },
-  methods:{
 
+  methods: {
+
+    matter:+ 1
   }
 }
-
 </script>
 
 <template>

@@ -1,9 +1,30 @@
-<script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+<script>
+
+
+export default {
+  data() {
+    return {
+      matter: 5,
+      active: true
+    }
+  },
+  methods: {
+    
+    increase: function () {
+
+
+
+    }
+  }
+}
+
 </script>
 
-<template >
+<template>
+  <p class="text-white">{{matter}}</p>
 
-    <TheWelcome />
+  <button class="bg-white rounded text-black p-4" @click="increase">Increase</button>
+
+
 
 </template>
