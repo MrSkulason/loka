@@ -8,7 +8,7 @@ export default {
       interval: null,
       //baseB[0] = base amount, baseB[1] = total baseBs, baseB[2] = powerOf, baseB[3] multiplier, baseB[4] powerOf
       baseB: [0, 0, 0, 1, 0],
-      prettyNumber: [0],
+      prettyNumber: [],
       perSec: [0, 0]
     }
   },
@@ -40,7 +40,7 @@ export default {
       console.log(((number[1]-number2[1])))
       if (number[1]-number2[1] > 10){return [number[0], number[1]]}
       else if (number[1]-number2[1] < -10){return [number2[0], number2[1]]}
-      else {number[0] = number[0] + (number2[0]/(Math.pow(10,number[1]-number2[1])))}
+      else {number[0] = number[0] + (number2[0]*(Math.pow(10,number2[1]-number[1])))}
 
         return this.powerOf(number[0], number[1])
       },
@@ -59,6 +59,7 @@ export default {
 
       return [mainNumber, powerOf]
     },
+    //Number1 = mass
     prettyNumb(number){
       number = Math.floor(number*100)/100
       return number
@@ -67,8 +68,13 @@ export default {
 
   mounted() {
     this.interval = setInterval(() => {this.persec = this.perSecond()}, 100)
-    this.interval = setInterval(() => {this.matter = this.increase(this.matter, this.persec), this.prettyNumb(this.matter[0]) }, 100)
-    this.interval = setInterval(() => {this.prettyNumber[0] = this.prettyNumb(this.matter[0])}, 100)
+    this.interval = setInterval(() => {this.matter = this.increase(this.matter, this.persec) }, 100)
+    this.interval = setInterval(() => {
+      this.prettyNumber[0] = this.prettyNumb(this.matter[0]),
+      this.prettyNumber[1] = this.prettyNumb(this.baseB[1]),
+      this.prettyNumber[2] = this.prettyNumb(this.baseB[3]),
+      this.prettyNumber[3] = this.prettyNumb(this.matter[0])
+    }, 100)
   }
 }
 
