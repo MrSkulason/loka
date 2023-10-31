@@ -7,32 +7,33 @@ export default {
       matter: [5, 0],
       interval: null,
       //baseB[0] = base amount, baseB[1] = total baseBs, baseB[2] = powerOf, baseB[3] multiplier, baseB[4] powerOf
-      baseB: [0, 0, 0, 1, 0],
+      baseB: [0, [0, 0], [1, 0]],
+      secondB: [0, [0, 0], [1, 0]],
       prettyNumber: [],
-      perSec: [0, 0]
+      //list in list to increase
+      perSec: [[],[],[]]
     }
   },
   methods: {
-    increase1: function () {
+    increase1: function (increased) {
 
-      this.baseB[1] = this.baseB[1]+Math.pow(10 ,(-this.baseB[2]));
+      increased[1][0] = increased[1][0]+Math.pow(10 ,(-increased[1][1]));
 
-      this.baseB[0]++;
-      if (this.baseB[0]%10 == 0){
-        this.baseB[3]=this.baseB[3]*2;
+      increased[0]++;
+      if (increased[0]%10 == 0){
+        increased[2][0]=increased[2][0]*2;
       }
-      let result = this.powerOf(this.baseB[1], this.baseB[2])
-      this.baseB[1] = result[0]
-      this.baseB[2] = result[1]
-      result = this.powerOf(this.baseB[3], this.baseB[4])
-      this.baseB[3] = result[0]
-      this.baseB[4] = result[1]
+      increased[1] = this.powerOf(increased[1][0], increased[1][1])
+
+      increased[2] = this.powerOf(increased[2][0], increased[2][1])
+      this.baseB = increased
     },
-    perSecond(){
-      this.perSec[0]=this.baseB[1]*this.baseB[3]
-      this.perSec[1]=this.baseB[2]+this.baseB[4]
-      console.log(this.perSec)
-      return this.powerOf(this.perSec[0], this.perSec[1])
+    perSecond(number){
+      let perSec = [0, 0]
+      perSec[0]= number[1][0]*number[2][0]
+      perSec[1]=number[1][1]+number[2][1]
+      console.log(perSec)
+      return this.powerOf(perSec[0], perSec[1])
     },
     increase(number, number2) {
       console.log(number)
@@ -49,13 +50,13 @@ export default {
       clearInterval(this.interval);
     },
     powerOf(mainNumber, powerOf){
-      if(mainNumber > 10 || mainNumber < 1) {
+      if(mainNumber >= 10 || mainNumber < 1) {
         let TruePowerOf = Math.floor(Math.log10(mainNumber))
         powerOf += TruePowerOf
         console.log(mainNumber)
         mainNumber = mainNumber/Math.pow(10, TruePowerOf)
       }
-      mainNumber = Math.ceil((mainNumber*10000))/10000
+      mainNumber = Math.floor((mainNumber*10000))/10000
 
       return [mainNumber, powerOf]
     },
@@ -67,14 +68,22 @@ export default {
   },
 
   mounted() {
-    this.interval = setInterval(() => {this.persec = this.perSecond()}, 100)
-    this.interval = setInterval(() => {this.matter = this.increase(this.matter, this.persec) }, 100)
+    this.interval = setInterval(() => {}, 100)
+    this.interval = setInterval(() => {
+      //mass
+      this.perSec[0] = this.perSecond(this.baseB),
+      this.matter = this.increase(this.matter[0], this.perSec[0]),
+      //increases BaseB
+      this.perSec[1] = this.perSecond(this.secondB),
+      this.matter = this.increase(this.baseB[1], this.perSec[1])
+    }, 100)
     this.interval = setInterval(() => {
       this.prettyNumber[0] = this.prettyNumb(this.matter[0]),
-      this.prettyNumber[1] = this.prettyNumb(this.baseB[1]),
-      this.prettyNumber[2] = this.prettyNumb(this.baseB[3]),
-      this.prettyNumber[3] = this.prettyNumb(this.matter[0])
+      this.prettyNumber[1] = this.prettyNumb(this.baseB[1][0]),
+      this.prettyNumber[2] = this.prettyNumb(this.baseB[2][0]),
+      this.prettyNumber[3] = this.prettyNumb(this.baseB[0])
     }, 100)
+
   }
 }
 
@@ -83,7 +92,7 @@ export default {
 <template>
   <p class="text-white">{{prettyNumber[0]}}e{{matter[1]}}</p>
 
-  <button class="bg-white rounded text-black p-4" @click="increase1">Inner Singularity {{baseB[1]}}e{{baseB[2]}} {{baseB[3]}}e{{baseB[4]}}</button>
+  <button class="bg-white rounded text-black p-4" @click="increase1(this.baseB)">Inner Singularity {{prettyNumber[1]}}e{{baseB[1][1]}} {{prettyNumber[2]}}e{{baseB[2][1]}}</button>
 
 
 
