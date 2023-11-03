@@ -9,9 +9,13 @@ export default {
       //baseB[0] = base amount, baseB[1] = total baseBs, baseB[2] = powerOf, baseB[3] multiplier, baseB[4] powerOf
       baseB: [0, [0, 0], [1, 0]],
       secondB: [0, [0, 0], [1, 0]],
+      thirdB: [0, [0, 0], [1, 0]],
+      fourthB: [0, [0, 0], [1, 0]],
+      fifthB: [0, [0, 0], [1, 0]],
+      sixthB: [0, [0, 0], [1, 0]],
       prettyNumber: [],
       //list in list to increase
-      perSec: [[0, 0],[0, 0],[0, 0]]
+      perSec: [[0, 0],[0, 0],[0, 0],[0, 0],[0, 0],[0, 0]]
     }
   },
   methods: {
@@ -26,7 +30,7 @@ export default {
       increased[1] = this.powerOf(increased[1][0], increased[1][1])
 
       increased[2] = this.powerOf(increased[2][0], increased[2][1])
-      this.baseB = increased
+      return increased
     },
     perSecond(number){
       let perSec = [0, 0]
@@ -76,13 +80,33 @@ export default {
       //increases BaseB
       this.perSec[1] = this.perSecond(this.secondB),
       this.baseB[1] = this.increase(this.baseB, this.perSec[1])
+      //increases BaseB
+      this.perSec[2] = this.perSecond(this.thirdB),
+      this.secondB[1] = this.increase(this.secondB, this.perSec[2])
+      //increases BaseB
+      this.perSec[3] = this.perSecond(this.fourthB),
+      this.thirdB[1] = this.increase(this.thirdB, this.perSec[3])
+      //increases BaseB
+      this.perSec[4] = this.perSecond(this.fifthB),
+      this.fourthB[1] = this.increase(this.fourthB, this.perSec[4])
+      //increases BaseB
+      this.perSec[5] = this.perSecond(this.sixthB),
+      this.fifthB[1] = this.increase(this.fifthB, this.perSec[5])
     }, 100)
     this.interval = setInterval(() => {
       this.prettyNumber[0] = this.prettyNumb(this.matter[1][0]),
       this.prettyNumber[1] = this.prettyNumb(this.baseB[1][0]),
       this.prettyNumber[2] = this.prettyNumb(this.baseB[2][0]),
-      this.prettyNumber[3] = this.prettyNumb(this.secondB[1][0])
-      this.prettyNumber[4] = this.prettyNumb(this.secondB[2][0])
+      this.prettyNumber[3] = this.prettyNumb(this.secondB[1][0]),
+      this.prettyNumber[4] = this.prettyNumb(this.secondB[2][0]),
+      this.prettyNumber[5] = this.prettyNumb(this.thirdB[1][0]),
+      this.prettyNumber[6] = this.prettyNumb(this.thirdB[2][0]),
+      this.prettyNumber[7] = this.prettyNumb(this.fourthB[1][0]),
+      this.prettyNumber[8] = this.prettyNumb(this.fourthB[2][0]),
+      this.prettyNumber[9] = this.prettyNumb(this.fifthB[1][0]),
+      this.prettyNumber[10] = this.prettyNumb(this.fifthB[2][0]),
+      this.prettyNumber[11] = this.prettyNumb(this.sixthB[1][0]),
+      this.prettyNumber[12] = this.prettyNumb(this.sixthB[2][0])
     }, 100)
 
   }
@@ -93,8 +117,14 @@ export default {
 <template>
   <p class="text-white">{{prettyNumber[0]}}e{{matter[1][1]}}</p>
 
-  <button class="bg-white rounded text-black p-4" @click="increase1(this.baseB)">Inner Singularity {{prettyNumber[1]}}e{{baseB[1][1]}} {{prettyNumber[2]}}e{{baseB[2][1]}}</button>
-  <button class="bg-white rounded text-black p-4" @click="increase1(this.secondB)">Second {{prettyNumber[3]}}e{{secondB[1][1]}} {{prettyNumber[4]}}e{{secondB[2][1]}}</button>
+  <button class="bg-white rounded text-black p-4" @click="this.baseB = increase1(this.baseB)">Inner Singularity {{prettyNumber[1]}}e{{baseB[1][1]}} {{prettyNumber[2]}}e{{baseB[2][1]}}</button>
+  <button class="bg-white rounded text-black p-4" @click="this.secondB = increase1(this.secondB)">Second {{prettyNumber[3]}}e{{secondB[1][1]}} {{prettyNumber[4]}}e{{secondB[2][1]}}</button>
+  <button class="bg-white rounded text-black p-4" @click="this.thirdB = increase1(this.thirdB)">Second {{prettyNumber[5]}}e{{thirdB[1][1]}} {{prettyNumber[6]}}e{{thirdB[2][1]}}</button>
+  <button class="bg-white rounded text-black p-4" @click="this.fourthB = increase1(this.fourthB)">Second {{prettyNumber[7]}}e{{fourthB[1][1]}} {{prettyNumber[8]}}e{{fourthB[2][1]}}</button>
+  <button class="bg-white rounded text-black p-4" @click="this.fifthB = increase1(this.fifthB)">Second {{prettyNumber[9]}}e{{fifthB[1][1]}} {{prettyNumber[10]}}e{{fifthB[2][1]}}</button>
+  <button class="bg-white rounded text-black p-4" @click="this.sixthB = increase1(this.sixthB)">Second {{prettyNumber[11]}}e{{sixthB[1][1]}} {{prettyNumber[12]}}e{{sixthB[2][1]}}</button>
+
+
 
 
 
