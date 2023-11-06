@@ -4,28 +4,36 @@
 export default {
   data() {
     return {
-      matter: [0, [5, 0], [0]],
+      matter: [0, [0, 1], [0]],
       interval: null,
-      //baseB[0] = base amount, baseB[1] = total baseBs, baseB[2] = powerOf, baseB[3] multiplier, baseB[4] powerOf
-      baseB: [0, [0, 0], [1, 0]],
-      secondB: [0, [0, 0], [1, 0]],
-      thirdB: [0, [0, 0], [1, 0]],
-      fourthB: [0, [0, 0], [1, 0]],
-      fifthB: [0, [0, 0], [1, 0]],
-      sixthB: [0, [0, 0], [1, 0]],
+      //baseB[0] = base amount, baseB[1] = total baseBs, baseB[2] = powerOf, baseB[3] multiplier, baseB[4] powerOf, 10 bought, cost multplier
+      baseB: [[0,1,1], [0, 0], [1, 0]],
+      secondB: [[0,2,3], [0, 0], [1, 0]],
+      thirdB: [[0,3,4], [0, 0], [1, 0]],
+      fourthB: [[0,4,6], [0, 0], [1, 0]],
+      fifthB: [[0,5,8], [0, 0], [1, 0]],
+      sixthB: [[0,6,10], [0, 0], [1, 0]],
       prettyNumber: [],
       //list in list to increase
       perSec: [[0, 0],[0, 0],[0, 0],[0, 0],[0, 0],[0, 0]]
     }
   },
   methods: {
+    buying(number, number2){
+      if(number[1][1] >= number2[0][1]) {
+        
+        return this.increase1(number2)
+      }
+      return number2
+    },
     increase1: function (increased) {
 
       increased[1][0] = increased[1][0]+Math.pow(10 ,(-increased[1][1]));
 
-      increased[0]++;
-      if (increased[0]%10 == 0){
+      increased[0][0]++;
+      if (increased[0][0]%10 == 0){
         increased[2][0]=increased[2][0]*2;
+        increased[0][1] += increased[0][2]
       }
       increased[1] = this.powerOf(increased[1][0], increased[1][1])
 
@@ -117,12 +125,12 @@ export default {
 <template>
   <p class="text-white">{{prettyNumber[0]}}e{{matter[1][1]}}</p>
 
-  <button class="bg-white rounded text-black p-4" @click="this.baseB = increase1(this.baseB)">Inner Singularity {{prettyNumber[1]}}e{{baseB[1][1]}} {{prettyNumber[2]}}e{{baseB[2][1]}}</button>
-  <button class="bg-white rounded text-black p-4" @click="this.secondB = increase1(this.secondB)">Second {{prettyNumber[3]}}e{{secondB[1][1]}} {{prettyNumber[4]}}e{{secondB[2][1]}}</button>
-  <button class="bg-white rounded text-black p-4" @click="this.thirdB = increase1(this.thirdB)">Second {{prettyNumber[5]}}e{{thirdB[1][1]}} {{prettyNumber[6]}}e{{thirdB[2][1]}}</button>
-  <button class="bg-white rounded text-black p-4" @click="this.fourthB = increase1(this.fourthB)">Second {{prettyNumber[7]}}e{{fourthB[1][1]}} {{prettyNumber[8]}}e{{fourthB[2][1]}}</button>
-  <button class="bg-white rounded text-black p-4" @click="this.fifthB = increase1(this.fifthB)">Second {{prettyNumber[9]}}e{{fifthB[1][1]}} {{prettyNumber[10]}}e{{fifthB[2][1]}}</button>
-  <button class="bg-white rounded text-black p-4" @click="this.sixthB = increase1(this.sixthB)">Second {{prettyNumber[11]}}e{{sixthB[1][1]}} {{prettyNumber[12]}}e{{sixthB[2][1]}}</button>
+  <button class="bg-white rounded text-black p-4" @click="this.baseB = buying(this.matter, this.baseB)">Inner Singularity {{prettyNumber[1]}}e{{baseB[1][1]}} {{prettyNumber[2]}}e{{baseB[2][1]}}</button>
+  <button class="bg-white rounded text-black p-4" @click="this.secondB = buying(this.matter, this.secondB)">Second {{prettyNumber[3]}}e{{secondB[1][1]}} {{prettyNumber[4]}}e{{secondB[2][1]}}</button>
+  <button class="bg-white rounded text-black p-4" @click="this.thirdB = buying(this.matter, this.thirdB)">Second {{prettyNumber[5]}}e{{thirdB[1][1]}} {{prettyNumber[6]}}e{{thirdB[2][1]}}</button>
+  <button class="bg-white rounded text-black p-4" @click="this.fourthB = buying(this.matter, this.fourthB)">Second {{prettyNumber[7]}}e{{fourthB[1][1]}} {{prettyNumber[8]}}e{{fourthB[2][1]}}</button>
+  <button class="bg-white rounded text-black p-4" @click="this.fifthB = buying(this.matter, this.fifthB)">Second {{prettyNumber[9]}}e{{fifthB[1][1]}} {{prettyNumber[10]}}e{{fifthB[2][1]}}</button>
+  <button class="bg-white rounded text-black p-4" @click="this.sixthB = buying(this.matter, this.sixthB)">Second {{prettyNumber[11]}}e{{sixthB[1][1]}} {{prettyNumber[12]}}e{{sixthB[2][1]}}</button>
 
 
 
