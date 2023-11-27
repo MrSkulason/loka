@@ -18,6 +18,7 @@ export default {
       perSec: [[0, 0],[0, 0],[0, 0],[0, 0],[0, 0],[0, 0]]
     }
   },
+
   methods: {
     buying(number, number2){
       if(number[1][1] >= number2[0][2]) {
@@ -30,6 +31,7 @@ export default {
       return number2
 
     },
+
     increase1: function (increased) {
 
       increased[1][0] = increased[1][0]+Math.pow(10 ,(-increased[1][1]));
@@ -63,9 +65,6 @@ export default {
         return this.powerOf(number[1][0], number[1][1])
       },
 
-    stopInterval() {
-      clearInterval(this.interval);
-    },
     powerOf(mainNumber, powerOf){
 
       if((mainNumber >= 10 || (mainNumber < 1)) && mainNumber>0) {
@@ -74,7 +73,7 @@ export default {
         console.log(mainNumber)
         mainNumber = mainNumber*Math.pow(10, -TruePowerOf)
       }
-      mainNumber = Math.floor((mainNumber*10000))/10000
+      mainNumber = Number(mainNumber.toFixed(4));
 
       return [mainNumber, powerOf]
     },
@@ -86,7 +85,26 @@ export default {
   },
 
   mounted() {
-    this.interval = setInterval(() => {}, 100)
+
+    if (localStorage.getItem("matter") != null) {
+      this.matter = JSON.parse(localStorage.getItem("matter"))
+      this.baseB = JSON.parse(localStorage.getItem("first"))
+      this.secondB = JSON.parse(localStorage.getItem("second"))
+      this.thirdB = JSON.parse(localStorage.getItem("third"))
+      this.fourthB = JSON.parse(localStorage.getItem("fourth"))
+      this.fifthB = JSON.parse(localStorage.getItem("fifth"))
+      this.sixthB = JSON.parse(localStorage.getItem("sixth"))
+    }
+
+    this.interval = setInterval(() => {
+      localStorage.setItem("matter", JSON.stringify(this.matter));
+      localStorage.setItem("first", JSON.stringify(this.baseB));
+      localStorage.setItem("second", JSON.stringify(this.secondB));
+      localStorage.setItem("third", JSON.stringify(this.thirdB));
+      localStorage.setItem("fourth", JSON.stringify(this.fourthB));
+      localStorage.setItem("fifth", JSON.stringify(this.fifthB));
+      localStorage.setItem("sixth", JSON.stringify(this.sixthB));
+    }, 30000)
     this.interval = setInterval(() => {
       //mass
       this.perSec[0] = this.perSecond(this.baseB),
@@ -130,14 +148,63 @@ export default {
 </script>
 
 <template>
+
+<div class="absolute inset-0 w-full flex items-center justify-end">
   <p class="text-white">{{prettyNumber[0]}}e{{matter[1][1]}}</p>
-  <div class="columns-1">
-    <button class="bg-white rounded text-black p-4" @click="this.baseB = buying(this.matter, this.baseB)">Inner Singularity {{prettyNumber[1]}}e{{baseB[1][1]}} {{prettyNumber[2]}}e{{baseB[2][1]}}</button>
-    <button class="bg-white rounded text-black p-4" @click="this.secondB = buying(this.matter, this.secondB)">Second {{prettyNumber[3]}}e{{secondB[1][1]}} {{prettyNumber[4]}}e{{secondB[2][1]}}</button>
-    <button class="bg-white rounded text-black p-4" @click="this.thirdB = buying(this.matter, this.thirdB)">Second {{prettyNumber[5]}}e{{thirdB[1][1]}} {{prettyNumber[6]}}e{{thirdB[2][1]}}</button>
-    <button class="bg-white rounded text-black p-4" @click="this.fourthB = buying(this.matter, this.fourthB)">Second {{prettyNumber[7]}}e{{fourthB[1][1]}} {{prettyNumber[8]}}e{{fourthB[2][1]}}</button>
-    <button class="bg-white rounded text-black p-4" @click="this.fifthB = buying(this.matter, this.fifthB)">Second {{prettyNumber[9]}}e{{fifthB[1][1]}} {{prettyNumber[10]}}e{{fifthB[2][1]}}</button>
-    <button class="bg-white rounded text-black p-4" @click="this.sixthB = buying(this.matter, this.sixthB)">Second {{prettyNumber[11]}}e{{sixthB[1][1]}} {{prettyNumber[12]}}e{{sixthB[2][1]}}</button>
+  <div class="flex flex-col w-1/3  ml-64 mr-24">
+
+    <div :class="{'[&:not(:hover)]:bg-lime-500 hover:bg-lime-600': matter[1][1] >= baseB[0][2]}" class="bg-white rounded text-black p-4 flex justify-between  mb-7  relative hover:bg-gray-300" @click="this.baseB = buying(this.matter, this.baseB)">
+
+      <div  class="relative top-1/2 left-0 "> Inner Singularity </div>
+      <div class="relative top-1/2 left-0 right-0 ">1e{{baseB[0][2]}}</div>
+      <div class="flex relative top-1/2  right-0 ">
+        <div>{{prettyNumber[1]}}e{{baseB[1][1]}}</div>
+        <div class="ml-2">{{prettyNumber[2]}}e{{baseB[2][1]}}</div>
+
+    </div>
+    </div>
+    <div :class="{ '[&:not(:hover)]:bg-lime-500 hover:bg-lime-600': matter[1][1] >= secondB[0][2]}"  class="bg-white rounded text-black p-4 flex justify-between mb-7 hover:bg-gray-300" @click="this.secondB = buying(this.matter, this.secondB)">
+      <div class="relative top-1/2 left-0 "> Inner Singularity </div>
+      <div class="relative top-1/2 left-0 right-0 ">1e{{secondB[0][2]}}</div>
+      <div class="flex  relative top-1/2  right-0 ">
+        <div>{{prettyNumber[3]}}e{{secondB[1][1]}}</div>
+        <div class="ml-2">{{prettyNumber[4]}}e{{secondB[2][1]}}</div>
+      </div>
+    </div>
+
+    <div :class="{ '[&:not(:hover)]:bg-lime-500 hover:bg-lime-600': matter[1][1] >= thirdB[0][2]}" class="bg-white rounded text-black p-4 flex justify-between mb-7 hover:bg-gray-300" @click="this.thirdB = buying(this.matter, this.thirdB)">
+      <div class="relative top-1/2 left-0 "> Inner Singularity </div>
+      <div class="relative top-1/2 left-0 right-0 ">1e{{thirdB[0][2]}}</div>
+      <div class="flex relative top-1/2  right-0 ">
+        <div>{{prettyNumber[5]}}e{{thirdB[1][1]}}</div>
+        <div class="ml-2">{{prettyNumber[6]}}e{{thirdB[2][1]}}</div>
+      </div>
+    </div>
+    <div :class="{ '[&:not(:hover)]:bg-lime-500 hover:bg-lime-600': matter[1][1] >= fourthB[0][2]}" class="bg-white rounded text-black p-4 flex justify-between mb-7 hover:bg-gray-300" @click="this.fourthB = buying(this.matter, this.fourthB)">
+      <div class="relative top-1/2 left-0 "> Inner Singularity </div>
+      <div class="relative top-1/2 left-0 right-0 ">1e{{fourthB[0][2]}}</div>
+      <div class="flex relative top-1/2  right-0 ">
+        <div>{{prettyNumber[7]}}e{{fourthB[1][1]}}</div>
+        <div class="ml-2">{{prettyNumber[8]}}e{{fourthB[2][1]}}</div>
+      </div>
+    </div>
+    <div :class="{ '[&:not(:hover)]:bg-lime-500 hover:bg-lime-600': matter[1][1] >= fifthB[0][2]}" class="bg-white rounded text-black p-4 flex justify-between mb-7 hover:bg-gray-300" @click="this.fifthB = buying(this.matter, this.fifthB)">
+      <div class="relative top-1/2 left-0 "> Inner Singularity </div>
+      <div class="relative top-1/2 left-0 right-0 ">1e{{fifthB[0][2]}}</div>
+      <div class="flex relative top-1/2  right-0 ">
+        <div>{{prettyNumber[9]}}e{{fifthB[1][1]}}</div>
+        <div class="ml-2">{{prettyNumber[10]}}e{{fifthB[2][1]}}</div>
+      </div>
+    </div>
+    <div :class="{ '[&:not(:hover)]:bg-lime-500 hover:bg-lime-600': matter[1][1] >= sixthB[0][2]}" class="bg-white rounded text-black p-4 flex justify-between mb-7 hover:bg-gray-300" @click="this.sixthB = buying(this.matter, this.sixthB)">
+      <div class="relative top-1/2 left-0 "> Inner Singularity </div>
+      <div class="relative top-1/2 left-0 right-0 ">1e{{sixthB[0][2]}}</div>
+      <div class="flex relative top-1/2  right-0 ">
+        <div>{{prettyNumber[11]}}e{{sixthB[1][1]}}</div>
+        <div class="ml-2">{{prettyNumber[12]}}e{{sixthB[2][1]}}</div>
+      </div>
+    </div>
+  </div>
   </div>
 
 
